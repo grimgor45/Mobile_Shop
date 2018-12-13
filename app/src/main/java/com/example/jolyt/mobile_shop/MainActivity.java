@@ -15,9 +15,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.example.jolyt.mobile_shop.Database.DBOperation;
 import com.example.jolyt.mobile_shop.Database.Tables.Cart;
@@ -29,8 +31,11 @@ import com.example.jolyt.mobile_shop.databinding.ActivityMainBinding;
 import java.lang.reflect.ReflectPermission;
 
 import io.realm.Realm;
+import io.realm.RealmObject;
+import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,24 +57,54 @@ public class MainActivity extends AppCompatActivity {
         shelf.setName("Rayon bananes");
         dbOp.createItem(shelf);
         shelf = dbOp.readWithId(re.where(Shelf.class).max("id").intValue(), Shelf.class);
-        Product product = new Product();
-        product.setName("Bannania");
-        product.setShelf(shelf);
-        product.setId();
-        dbOp.createItem(product);
+        dbOp.createProduct("1 kg de bananes","wtf is this banana",shelf,(float)2.45);
+        dbOp.createProduct("2 kg de bananes","too much banana",shelf,(float)4.2);
+
 
         long sizeOfProductTable = re.where(Product.class).count();
 
+
         LinearLayout parent = findViewById(R.id.parentLayout);
-        for(int i=0;i<sizeOfProductTable;i++) {
+        RealmResults<Product> productList = re.where(Product.class).findAll();
+        int cnt =0;
+        final Intent intent= new Intent(this, DetailActivity.class);
+
+        for(Product prod:productList) {
+            cnt++;
             LinearLayout Llayout = new LinearLayout(this);
-        Llayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-        parent.addView(Llayout);
-        Button btn = new Button(this);
-        btn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        btn.setText("this is working");
-        Llayout.addView(btn);
-    }
+            Llayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+            //Llayout.setId(Integer.valueOf("layout " + cnt));
+            parent.addView(Llayout);
+            final Button btnName = new Button(this);
+            btnName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            btnName.setText(prod.getName());
+            //btnName.setId(Integer.valueOf("btnName "+cnt));
+            btnName.setBackgroundColor(0xffFAFAFA);
+            btnName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    btnName.setBackgroundColor(0xffF2F2F2);
+                }
+            });
+            TextView tvPrice = new TextView(this);
+            tvPrice.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            tvPrice.setText(Float.toString(prod.getPrice())+"€");
+            //tvPrice.setId(Integer.valueOf("tvPrice "+cnt));
+            ImageButton ibEdit = new ImageButton(this);
+            ibEdit.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            ibEdit.setBackgroundColor(0000);
+            ibEdit.setImageResource(R.drawable.edit);
+            ibEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    intent.putExtra("idProduct", 1);
+                    startActivity(intent);
+                }
+            });
+            Llayout.addView(btnName);
+            Llayout.addView(tvPrice);
+            Llayout.addView(ibEdit);
+        }
 
 
         //
@@ -84,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        final Intent intent= new Intent(this, DetailActivity.class);
+
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
