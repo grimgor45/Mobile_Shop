@@ -89,7 +89,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{(v)->detailModel.saveChanges(v)}"
-            android:text="@{String.valueOf(detailModel.buttonLabel)}"
+            android:text="Save"
             android:layout_below="@+id/editTest"/>
         <Button
             android:layout_width="wrap_content"

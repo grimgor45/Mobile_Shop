@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="elementModel"
+            type="com.example.jolyt.mobile_shop.RVAdapter"/>
+        <import type="android.view.View"/>
+    </data>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv"
+        android:text="@{elementModel.text}"/>
+    <Button
+        android:id="@+id/button"
+        android:layout_toRightOf="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="delete"
+        />
+
+</RelativeLayout>
+</layout>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name = "rvModel"
+            type = "com.example.jolyt.mobile_shop.ViewModelRV"/>
+        ></data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+<android.support.v7.widget.RecyclerView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    android:id="@+id/RecyclerView"
+    android:adapter="@{rvModel.adapter}"
+
+    ></android.support.v7.widget.RecyclerView>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:onClick="@{(v)->rvModel.create(v)}"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="nameCart"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:afterTextChanged="@{(e)->rvModel.storeName(e)}"/>
+    </RelativeLayout>
+</layout>
