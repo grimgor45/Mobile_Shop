@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable name = "detailModel"
+            type = "com.example.jolyt.mobile_shop.DetailModelView"/>
+    ></data>
+    <RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/NameHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            />
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{String.valueOf(detailModel.name)}"
+            android:layout_toRightOf="@+id/NameHint"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comment"
+            android:layout_below="@+id/NameHint"
+            android:id="@+id/CommentHint"/>
+        <TextView
+            android:id="@+id/comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{String.valueOf(detailModel.comment)}"
+            android:layout_below="@+id/name"
+            android:layout_toRightOf="@+id/CommentHint"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shelf"
+            android:layout_below="@+id/CommentHint"
+            android:id="@+id/ShelfHint"/>
+        <TextView
+            android:id="@+id/shelf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{String.valueOf(detailModel.shelf)}"
+            android:layout_below="@+id/comment"
+            android:layout_toRightOf="@+id/ShelfHint"/>
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{String.valueOf(detailModel.price)}"
+            android:layout_below="@+id/ShelfHint"
+            />
+
+        <EditText
+        android:id="@+id/nameEdit"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:inputType="text"
+        android:afterTextChanged="@{(editable)->detailModel.afterNameChange(editable)}"
+        android:layout_below="@+id/price"
+        android:hint="Name : "/>
+        <EditText
+        android:id="@+id/commentEdit"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:inputType="text"
+        android:afterTextChanged="@{(editable)->detailModel.afterCommentChange(editable)}"
+        android:layout_below="@+id/nameEdit"
+        android:hint="Comment : "/>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:afterTextChanged="@{(editable)->detailModel.afterPriceChange(editable)}"
+            android:layout_below="@id/commentEdit"
+            android:hint="number"
+            android:id="@+id/editTest"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->detailModel.saveChanges()}"
+            android:text="@{String.valueOf(detailModel.buttonLabel)}"
+            android:layout_below="@+id/editTest"/>
+
+</RelativeLayout>
+</layout>
