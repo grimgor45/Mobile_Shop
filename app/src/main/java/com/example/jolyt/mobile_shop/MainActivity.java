@@ -71,14 +71,13 @@ public class MainActivity extends AppCompatActivity {
 
         for(Product prod:productList) {
             cnt++;
+            final int productid = prod.getId();
             LinearLayout Llayout = new LinearLayout(this);
             Llayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-            //Llayout.setId(Integer.valueOf("layout " + cnt));
             parent.addView(Llayout);
             final Button btnName = new Button(this);
             btnName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             btnName.setText(prod.getName());
-            //btnName.setId(Integer.valueOf("btnName "+cnt));
             btnName.setBackgroundColor(0xffFAFAFA);
             btnName.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -89,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
             TextView tvPrice = new TextView(this);
             tvPrice.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             tvPrice.setText(Float.toString(prod.getPrice())+"€");
-            //tvPrice.setId(Integer.valueOf("tvPrice "+cnt));
             ImageButton ibEdit = new ImageButton(this);
             ibEdit.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             ibEdit.setBackgroundColor(0000);
@@ -97,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             ibEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    intent.putExtra("idProduct", 1);
+                    intent.putExtra("idProduct",productid);
                     startActivity(intent);
                 }
             });
@@ -124,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                intent.putExtra("idProduct", 1);
+                intent.putExtra("idProduct", -1);
                 startActivity(intent);
             }
         });

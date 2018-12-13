@@ -33,6 +33,7 @@ public class DetailModelView {
     public final ObservableField<String> name = new ObservableField<>();
     public final ObservableField<String> comment = new ObservableField<>();
     public final ObservableField<String> shelf = new ObservableField<>();
+    public boolean create;
     public DetailFields detail;
     public final ObservableField<String> buttonLabel = new ObservableField<>();
     public final ObservableFloat price = new ObservableFloat();
@@ -46,20 +47,22 @@ public class DetailModelView {
 
     public DetailModelView(int idProduct){
         re = Realm.getDefaultInstance();
-
+        create=idProduct==-1?true:false;
         DBOperation dbOp = new DBOperation(re);
         this.idProduct = idProduct;
         detail = new DetailFields();
-        RealmObject product = re.where(Product.class).equalTo("id", idProduct).findFirst();
-        name.set(((Product) product).getName());
-        comment.set(((Product) product).getCommentary());
-        shelf.set(((Product) product).getShelf().getName());
-        price.set(((Product) product).getPrice());
-        Log.i("testtest", ""+((Product) product).getPrice());
+        RealmObject product;
         allShelf = re.where(Shelf.class).findAll();
-        buttonLabel.set("blablabla");
-        Log.i("ShelfIdInRealm", ""+((Product) product).getShelf().getId());
-        initialPos.set(allShelf.indexOf(allShelf.where().equalTo("name", ((Product) product).getShelf().getName()).findFirst()));
+        if(!create){
+            product = re.where(Product.class).equalTo("id", idProduct).findFirst();
+            name.set(((Product) product).getName());
+            comment.set(((Product) product).getCommentary());
+            shelf.set(((Product) product).getShelf().getName());
+            price.set(((Product) product).getPrice());
+            initialPos.set(allShelf.indexOf(allShelf.where().equalTo("name", ((Product) product).getShelf().getName()).findFirst()));
+        }
+
+
         Log.i("ShelfIdinipos", ""+initialPos.get());
         List<Shelf> listShelf= re.copyFromRealm(allShelf);
         for (Shelf shel :  listShelf){
@@ -70,7 +73,16 @@ public class DetailModelView {
     public void saveChanges(View view){
         DBOperation dbOp = new DBOperation(re);
         int idTrue = re.where(Shelf.class).equalTo("name",allShelf.get(initialPos.get()).getName()).findFirst().getId();
-        dbOp.updateProduct(idProduct, detail.getName(), idTrue, detail.getComment(), detail.getPrice());
+        if(!create){
+            dbOp.updateProduct(idProduct, detail.getName(), idTrue, detail.getComment(), detail.getPrice());
+            Toast toast = Toast.makeText(view.getContext(), "update product", Toast.LENGTH_LONG);
+
+        }
+        else {
+            dbOp.createProduct(detail.getName(),detail.getComment(),re.where(Shelf.class).equalTo("id",idTrue).findFirst(), detail.getPrice());
+            Toast toast = Toast.makeText(view.getContext(), "product created", Toast.LENGTH_LONG);
+
+        }
         Toast toast = Toast.makeText(view.getContext(), "update product", Toast.LENGTH_LONG);
         Log.i("ShelfId", ""+initialPos.get());
         Log.i("ShelfIdTrue", ""+idTrue);
@@ -139,11 +151,14 @@ public class DetailModelView {
 
     public void deleteProduct(View view){
         DBOperation dbOp = new DBOperation(re);
-        dbOp.deleteProductId(idProduct);
-        Toast toast = Toast.makeText(view.getContext(), "deleted product", Toast.LENGTH_LONG);
-        toast.show();
-        re.close();
-        startAcitivityList(view);
+        if(create) {
+            dbOp.deleteProductId(idProduct);
+            Toast toast = Toast.makeText(view.getContext(), "deleted product", Toast.LENGTH_LONG);
+            toast.show();
+            re.close();
+            startAcitivityList(view);
+        }
+        else{Toast toast = Toast.makeText(view.getContext(), "can't delete items in creation mode", Toast.LENGTH_LONG);}
     }
 
 
