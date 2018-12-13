@@ -42,8 +42,6 @@ public class ProductModel {
     public ArrayList<ProductModel> getArrayListProduct(){
         ArrayList<ProductModel>  productModelArrayList = new ArrayList<>();
         Realm re = Realm.getDefaultInstance();
-        ArrayList<Product>
-        ProductModel  pM= new ProductModel(new);//TODO get element from db
         re.close();
         return productModelArrayList;
     }
