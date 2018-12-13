@@ -13,6 +13,8 @@ public class Product extends RealmObject {
     private Shelf shelf;
     private String commentary;
     private float price;
+    private Cart cart;
+    private boolean taken;
 
     public int getId() {
         return id;
@@ -56,5 +58,21 @@ public class Product extends RealmObject {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public boolean isTaken() {
+        return taken;
+    }
+
+    public void setTaken(boolean taken) {
+        this.taken = taken;
     }
 }
