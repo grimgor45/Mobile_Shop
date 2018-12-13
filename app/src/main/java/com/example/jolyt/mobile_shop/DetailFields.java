@@ -4,7 +4,11 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingConversion;
 
+import com.example.jolyt.mobile_shop.Database.Tables.Shelf;
+
 import java.util.Objects;
+
+import io.realm.Realm;
 
 public class DetailFields extends BaseObservable {
     private String field1;
@@ -28,6 +32,10 @@ public class DetailFields extends BaseObservable {
     @Bindable
     public void setName(String name) {
         this.name = name;
+        if (this.name == null)
+        {
+            this.name = "";
+        }
         //notifyPropertyChanged(BR.name);
     }
 
@@ -37,6 +45,10 @@ public class DetailFields extends BaseObservable {
     @Bindable
     public void setComment(String comment) {
         this.comment = comment;
+        if (this.comment == null)
+        {
+            this.comment = "";
+        }
         //notifyPropertyChanged(BR.comment);
     }
 
@@ -45,7 +57,8 @@ public class DetailFields extends BaseObservable {
     }
 
     public void setShelf(String shelf) {
-        this.shelf = shelf;
+        this.shelf= shelf;
+
     }
 
     public float getPrice() {
