@@ -63,6 +63,7 @@
         android:layout_width="match_parent"
         android:inputType="text"
         android:afterTextChanged="@{(editable)->detailModel.afterNameChange(editable)}"
+            android:text="@{detailModel.name}"
         android:layout_below="@+id/price"
         android:hint="Name : "/>
         <EditText
@@ -70,6 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:inputType="text"
+            android:text="@{detailModel.comment}"
         android:afterTextChanged="@{(editable)->detailModel.afterCommentChange(editable)}"
         android:layout_below="@+id/nameEdit"
         android:hint="Comment : "/>
@@ -77,16 +79,54 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="number"
+            android:text="@{String.valueOf(detailModel.price)}"
             android:afterTextChanged="@{(editable)->detailModel.afterPriceChange(editable)}"
             android:layout_below="@id/commentEdit"
             android:hint="number"
             android:id="@+id/editTest"/>
         <Button
+            android:id="@+id/save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{()->detailModel.saveChanges()}"
+            android:onClick="@{(v)->detailModel.saveChanges(v)}"
             android:text="@{String.valueOf(detailModel.buttonLabel)}"
             android:layout_below="@+id/editTest"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{(v)->detailModel.startAcitivityList(v)}"
+            android:text="goBack"
+            android:layout_below="@+id/save"
+            android:id="@+id/goBack"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="delete"
+            android:onClick="@{(v)->detailModel.deleteProduct(v)}"
+            android:layout_below="@+id/goBack"
+            android:id="@+id/delete"/>
+        <android.support.v7.widget.AppCompatSpinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/delete"
+            android:entries="@{detailModel.shelfList}"
+            android:selectedItemPosition="@={detailModel.initialPos}"
+            android:id="@+id/spinner"
+            ></android.support.v7.widget.AppCompatSpinner>
 
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:afterTextChanged="@{(editable)->detailModel.afterShelfNameCreation(editable)}"
+            android:layout_below="@+id/spinner"
+            android:id="@+id/editShelf"
+            android:hint="New Shelf"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editShelf"
+            android:onClick="@{(v)->detailModel.createShelf(v)}"
+            android:text="Create Shelf"/>
 </RelativeLayout>
 </layout>

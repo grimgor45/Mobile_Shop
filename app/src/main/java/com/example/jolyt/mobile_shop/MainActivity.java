@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         DBOperation dbOp= new DBOperation(re);
         Shelf shelf = new Shelf();
         shelf.setId();
-        shelf.setName("Rayon bannanes");
+        shelf.setName("Rayon Carottes");
         dbOp.createItem(shelf);
         shelf = dbOp.readWithId(re.where(Shelf.class).max("id").intValue(), Shelf.class);
         Product product = new Product();
@@ -65,7 +65,11 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                intent.putExtra("idProduct", 1);
+                Realm re = Realm.getDefaultInstance();
+                int idProd = re.where(Product.class).findFirst().getId();
+                re.close();
+                intent.putExtra("idProduct", idProd);
+
                 startActivity(intent);
             }
         });

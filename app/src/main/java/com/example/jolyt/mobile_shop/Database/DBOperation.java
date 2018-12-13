@@ -126,7 +126,8 @@ public class DBOperation {
         re.beginTransaction();
         toEdit.setName(name);
         toEdit.setCommentary(commentary);
-        toEdit.setShelf(re.where(Shelf.class).equalTo("id", id).findFirst());
+        toEdit.setPrice(price);
+        toEdit.setShelf(re.where(Shelf.class).equalTo("id", shelfId).findFirst());
         re.commitTransaction();
 
     }
