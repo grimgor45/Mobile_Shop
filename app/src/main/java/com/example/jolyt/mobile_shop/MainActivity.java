@@ -37,16 +37,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ((ActivityMainBinding)DataBindingUtil.setContentView(this,R.layout.activity_main)).setMainViewModel(new MainModelView());
 
-        LinearLayout parent = findViewById(R.id.parentLayout);
-        for(int i=0;i<100;i++) {
-            LinearLayout Llayout = new LinearLayout(this);
-            Llayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-            parent.addView(Llayout);
-            Button btn = new Button(this);
-            btn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            btn.setText("this is working");
-            Llayout.addView(btn);
-        }
+
                 //Do not touch needed for database
 
         //toadd object  use : new oject then new transaction and copy
@@ -58,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         DBOperation dbOp= new DBOperation(re);
         Shelf shelf = new Shelf();
         shelf.setId();
-        shelf.setName("Rayon bannanes");
+        shelf.setName("Rayon bananes");
         dbOp.createItem(shelf);
         shelf = dbOp.readWithId(re.where(Shelf.class).max("id").intValue(), Shelf.class);
         Product product = new Product();
@@ -66,6 +57,20 @@ public class MainActivity extends AppCompatActivity {
         product.setShelf(shelf);
         product.setId();
         dbOp.createItem(product);
+
+        long sizeOfProductTable = re.where(Product.class).count();
+
+
+        LinearLayout parent = findViewById(R.id.parentLayout);
+        for(int i=0;i<sizeOfProductTable;i++) {
+            LinearLayout Llayout = new LinearLayout(this);
+            Llayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+            parent.addView(Llayout);
+            Button btn = new Button(this);
+            btn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            btn.setText("this is working");
+            Llayout.addView(btn);
+        }
 
 
         //
