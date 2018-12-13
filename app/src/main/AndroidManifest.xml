@@ -28,6 +28,10 @@
             android:name=".Test"
             android:label="@string/title_activity_test"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ActivityRecyclerViewTest"
+            android:label="recyclerview"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -60,17 +60,16 @@ public class MainActivity extends AppCompatActivity {
 
         long sizeOfProductTable = re.where(Product.class).count();
 
-
         LinearLayout parent = findViewById(R.id.parentLayout);
         for(int i=0;i<sizeOfProductTable;i++) {
             LinearLayout Llayout = new LinearLayout(this);
-            Llayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-            parent.addView(Llayout);
-            Button btn = new Button(this);
-            btn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            btn.setText("this is working");
-            Llayout.addView(btn);
-        }
+        Llayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        parent.addView(Llayout);
+        Button btn = new Button(this);
+        btn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        btn.setText("this is working");
+        Llayout.addView(btn);
+    }
 
 
         //
