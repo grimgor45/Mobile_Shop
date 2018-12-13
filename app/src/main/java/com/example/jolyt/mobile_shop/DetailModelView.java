@@ -65,7 +65,6 @@ public class DetailModelView {
         for (Shelf shel :  listShelf){
             shelfList.add(shel.getName());
         }
-
     }
 
     public void saveChanges(View view){
