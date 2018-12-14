@@ -65,9 +65,10 @@ public class DBOperation {
         product.setTaken(false);
         re.commitTransaction();
     }
-    void createProductInCart(String commentary, Cart cart, Product product, int quantity){
+    public void createProductInCart(String commentary, Cart cart, Product product, int quantity){
         re.beginTransaction();
         ProductInCart prodTo = re.createObject(ProductInCart.class, GenerateKey(ProductInCart.class));
+        prodTo.setProduct(product);
         prodTo.setCommentary(commentary);
         prodTo.setCart(cart);
         prodTo.setTaken(false);

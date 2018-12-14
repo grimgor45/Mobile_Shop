@@ -7,4 +7,13 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/cartActivity"
+        android:icon="@android:drawable/ic_popup_sync"
+        app:showAsAction="ifRoom|withText"
+        android:title="cartactivity">
+    </item>
+
+
 </menu>

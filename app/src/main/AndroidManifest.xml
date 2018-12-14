@@ -21,6 +21,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".CartActivity"
+            android:label="Mobile Shop"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".DetailActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"></activity>
