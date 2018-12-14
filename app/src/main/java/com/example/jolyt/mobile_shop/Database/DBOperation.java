@@ -23,24 +23,6 @@ public class DBOperation {
         return re.where(type).equalTo("id", id).findFirst();
     }
 
-    /*public Cart readCart(int id){
-        final Cart cart = re.where(Cart.class).equalTo("id", id).findFirst();
-        return cart;
-    }
-    Product readProduct(int id){
-
-    }
-    ProductInCart readProductinCart(Realm realm){
-
-    }
-    Shelf readShelf(Realm realm){
-
-    }
-    public Users readUsers(int id){
-        final Users user= re.where(Users.class).equalTo("id", id).findFirst();
-        return user;
-    }*/
-
     public <T extends RealmObject>void createItem(T item){
         re.beginTransaction();
         re.copyToRealm(item);

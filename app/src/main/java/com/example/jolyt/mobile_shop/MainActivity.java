@@ -1,39 +1,29 @@
 package com.example.jolyt.mobile_shop;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.SharedLibraryInfo;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jolyt.mobile_shop.Database.DBOperation;
-import com.example.jolyt.mobile_shop.Database.Tables.Cart;
 import com.example.jolyt.mobile_shop.Database.Tables.Product;
 import com.example.jolyt.mobile_shop.Database.Tables.ProductInCart;
 import com.example.jolyt.mobile_shop.Database.Tables.Shelf;
-import com.example.jolyt.mobile_shop.Database.Tables.Users;
 import com.example.jolyt.mobile_shop.databinding.ActivityMainBinding;
 
-import java.lang.reflect.ReflectPermission;
 
 import io.realm.Realm;
-import io.realm.RealmObject;
 import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
@@ -64,16 +54,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        long sizeOfProductTable = re.where(Product.class).count();
-
-
         final LinearLayout parent = findViewById(R.id.parentLayout);
         RealmResults<Product> productList = re.where(Product.class).findAll();
-        int cnt =0;
         final Intent intent= new Intent(this, DetailActivity.class);
 
         for(final Product prod:productList) {
-            cnt++;
             final int productid = prod.getId();
             LinearLayout Llayout = new LinearLayout(this);
             Llayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
@@ -129,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }

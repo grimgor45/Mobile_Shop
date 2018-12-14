@@ -1,21 +1,12 @@
 package com.example.jolyt.mobile_shop;
 
-import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.SharedLibraryInfo;
-import android.databinding.BaseObservable;
-import android.databinding.BindingAdapter;
-import android.databinding.Observable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableField;
 import android.databinding.ObservableFloat;
 import android.databinding.ObservableInt;
-import android.text.Editable;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.jolyt.mobile_shop.Database.DBOperation;
@@ -35,14 +26,12 @@ public class DetailModelView {
     public final ObservableField<String> shelf = new ObservableField<>();
     public boolean create;
     public DetailFields detail;
-    public final ObservableField<String> buttonLabel = new ObservableField<>();
     public final ObservableFloat price = new ObservableFloat();
     private int idProduct;
     public final ObservableArrayList<String> shelfList = new ObservableArrayList<>();
     public final ObservableInt initialPos = new ObservableInt();
     Realm re;
 
-    List<Shelf> listShelf;
     RealmResults<Shelf> allShelf;
 
     public DetailModelView(int idProduct){
@@ -63,7 +52,6 @@ public class DetailModelView {
         }
 
 
-        Log.i("ShelfIdinipos", ""+initialPos.get());
         List<Shelf> listShelf= re.copyFromRealm(allShelf);
         for (Shelf shel :  listShelf){
             shelfList.add(shel.getName());
@@ -73,19 +61,17 @@ public class DetailModelView {
     public void saveChanges(View view){
         DBOperation dbOp = new DBOperation(re);
         int idTrue = re.where(Shelf.class).equalTo("name",allShelf.get(initialPos.get()).getName()).findFirst().getId();
+        Toast toast;
         if(!create){
             dbOp.updateProduct(idProduct, detail.getName(), idTrue, detail.getComment(), detail.getPrice());
-            Toast toast = Toast.makeText(view.getContext(), "update product", Toast.LENGTH_LONG);
+            toast = Toast.makeText(view.getContext(), "update product", Toast.LENGTH_LONG);
 
         }
         else {
             dbOp.createProduct(detail.getName(),detail.getComment(),re.where(Shelf.class).equalTo("id",idTrue).findFirst(), detail.getPrice(),null);
-            Toast toast = Toast.makeText(view.getContext(), "product created", Toast.LENGTH_LONG);
+            toast = Toast.makeText(view.getContext(), "product created", Toast.LENGTH_LONG);
 
         }
-        Toast toast = Toast.makeText(view.getContext(), "update product", Toast.LENGTH_LONG);
-        Log.i("ShelfId", ""+initialPos.get());
-        Log.i("ShelfIdTrue", ""+idTrue);
         toast.show();
     }
 
@@ -115,7 +101,6 @@ public class DetailModelView {
     }
     public void afterNameChange(CharSequence s)
     {
-        Log.i("truc", s.toString());
         detail.setName(s.toString());
         name.set(s.toString());
     }
@@ -126,12 +111,9 @@ public class DetailModelView {
     }
     public void afterPriceChange(CharSequence s)
     {
-        Log.i("charseq", s.toString());
         if (s.length() !=0) {
             detail.setPrice(Float.valueOf(s.toString()));
-            Log.i("floatPrice", "" + Float.valueOf(s.toString()));
             price.set(detail.getPrice());
-            Log.i("priceget", "" + price.get());
         }
     }
 
@@ -158,7 +140,7 @@ public class DetailModelView {
             re.close();
             startAcitivityList(view);
         }
-        else{Toast toast = Toast.makeText(view.getContext(), "can't delete items in creation mode", Toast.LENGTH_LONG);}
+        else{Toast.makeText(view.getContext(), "can't delete items in creation mode", Toast.LENGTH_LONG).show();}
     }
 
 
