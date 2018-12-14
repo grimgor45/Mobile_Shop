@@ -47,13 +47,6 @@ public class CartActivity extends AppCompatActivity {
 
         final Realm re = Realm.getDefaultInstance();
         final DBOperation dbOp= new DBOperation(re);
-        Shelf shelf = new Shelf();
-        shelf.setId();
-        shelf.setName("Rayon bananes");
-        dbOp.createItem(shelf);
-        shelf = dbOp.readWithId(re.where(Shelf.class).max("id").intValue(), Shelf.class);
-        dbOp.createProductInCart("commentary",null,re.where(Product.class).findFirst(),1);
-
 
         long sizeOfProductTable = re.where(ProductInCart.class).count();
 

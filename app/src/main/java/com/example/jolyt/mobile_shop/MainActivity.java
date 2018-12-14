@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.jolyt.mobile_shop.Database.DBOperation;
 import com.example.jolyt.mobile_shop.Database.Tables.Cart;
@@ -45,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        Realm re = Realm.getDefaultInstance();
-        DBOperation dbOp = new DBOperation(re);
+        final Realm re = Realm.getDefaultInstance();
+        final DBOperation dbOp = new DBOperation(re);
         if (re.where(Shelf.class).findFirst()==null) {
 
             Shelf shelf = new Shelf();
@@ -66,12 +67,12 @@ public class MainActivity extends AppCompatActivity {
         long sizeOfProductTable = re.where(Product.class).count();
 
 
-        LinearLayout parent = findViewById(R.id.parentLayout);
+        final LinearLayout parent = findViewById(R.id.parentLayout);
         RealmResults<Product> productList = re.where(Product.class).findAll();
         int cnt =0;
         final Intent intent= new Intent(this, DetailActivity.class);
 
-        for(Product prod:productList) {
+        for(final Product prod:productList) {
             cnt++;
             final int productid = prod.getId();
             LinearLayout Llayout = new LinearLayout(this);
@@ -84,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
             btnName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    btnName.setBackgroundColor(0xffF2F2F2);
+                    dbOp.createProductInCart(prod.getCommentary(),null,prod,1);
+                    Toast.makeText(parent.getContext(), prod.getName()+" added to cart", Toast.LENGTH_LONG).show();
                 }
             });
             TextView tvPrice = new TextView(this);
@@ -107,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Log.i("MaxProd", ""+re.where(Product.class).findAll().size());
-        re.close();
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -119,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 intent.putExtra("idProduct", -1);
+                re.close();
                 startActivity(intent);
             }
         });
