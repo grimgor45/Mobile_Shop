@@ -69,7 +69,7 @@ public class CartActivity extends AppCompatActivity {
         int cnt =0;
         final Intent intent= new Intent(this, CartActivity.class);
 
-        for(ProductInCart prod:productList) {
+        for(final ProductInCart prod:productList) {
             cnt++;
             final int productid = prod.getId();
             LinearLayout Llayout = new LinearLayout(this);
@@ -78,11 +78,25 @@ public class CartActivity extends AppCompatActivity {
             final Button btnName = new Button(this);
             btnName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             btnName.setText(prod.getProduct().getName());
-            btnName.setBackgroundColor(0xffFAFAFA);
+            if(prod.isTaken()){
+                btnName.setBackgroundColor(0xffBDBDBD);
+            }
+            else {
+                btnName.setBackgroundColor(0xffFAFAFA);
+            }
             btnName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    btnName.setBackgroundColor(0xffF2F2F2);
+                    re.beginTransaction();
+                    if(prod.isTaken()){
+                        prod.setTaken(false);
+                        btnName.setBackgroundColor(0xffFAFAFA);
+                    }
+                    else {
+                        prod.setTaken(true);
+                        btnName.setBackgroundColor(0xffBDBDBD);
+                    }
+                    re.commitTransaction();
                 }
             });
             TextView tvPrice = new TextView(this);
