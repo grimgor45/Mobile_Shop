@@ -80,7 +80,7 @@ public class DetailModelView {
 
         }
         else {
-            dbOp.createProduct(detail.getName(),detail.getComment(),re.where(Shelf.class).equalTo("id",idTrue).findFirst(), detail.getPrice());
+            dbOp.createProduct(detail.getName(),detail.getComment(),re.where(Shelf.class).equalTo("id",idTrue).findFirst(), detail.getPrice(),null);
             Toast toast = Toast.makeText(view.getContext(), "product created", Toast.LENGTH_LONG);
 
         }

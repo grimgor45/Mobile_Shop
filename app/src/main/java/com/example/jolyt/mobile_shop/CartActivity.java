@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.example.jolyt.mobile_shop.Database.DBOperation;
 import com.example.jolyt.mobile_shop.Database.Tables.Cart;
 import com.example.jolyt.mobile_shop.Database.Tables.Product;
+import com.example.jolyt.mobile_shop.Database.Tables.ProductInCart;
 import com.example.jolyt.mobile_shop.Database.Tables.Shelf;
 import com.example.jolyt.mobile_shop.Database.Tables.Users;
 import com.example.jolyt.mobile_shop.databinding.ActivityMainBinding;
@@ -34,7 +35,8 @@ import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 
-public class MainActivity extends AppCompatActivity {
+public class CartActivity extends AppCompatActivity {
+
 
 
     @Override
@@ -43,33 +45,31 @@ public class MainActivity extends AppCompatActivity {
         ((ActivityMainBinding)DataBindingUtil.setContentView(this,R.layout.activity_main)).setMainViewModel(new MainModelView());
 
 
-                //Do not touch needed for database
+        //Do not touch needed for database
 
         //toadd object  use : new oject then new transaction and copy
         //for PK autogenerate
         //mutableRealmInteger
         //https://stackoverflow.com/questions/40174920/how-to-set-primary-key-auto-increment-in-realm-android
-
-        Realm re = Realm.getDefaultInstance();
-        DBOperation dbOp= new DBOperation(re);
+        final Realm re = Realm.getDefaultInstance();
+        final DBOperation dbOp= new DBOperation(re);
         Shelf shelf = new Shelf();
         shelf.setId();
         shelf.setName("Rayon bananes");
         dbOp.createItem(shelf);
         shelf = dbOp.readWithId(re.where(Shelf.class).max("id").intValue(), Shelf.class);
-        dbOp.createProduct("1 kg de bananes","wtf is this banana",shelf,(float)2.45,null);
-        dbOp.createProduct("2 kg de bananes","too much banana",shelf,(float)4.2,null);
+        dbOp.createProductInCart("commentary",null,re.where(Product.class).findFirst(),1);
 
 
-        long sizeOfProductTable = re.where(Product.class).count();
+        long sizeOfProductTable = re.where(ProductInCart.class).count();
 
 
         LinearLayout parent = findViewById(R.id.parentLayout);
-        RealmResults<Product> productList = re.where(Product.class).findAll();
+        RealmResults<ProductInCart> productList = re.where(ProductInCart.class).findAll();
         int cnt =0;
-        final Intent intent= new Intent(this, DetailActivity.class);
+        final Intent intent= new Intent(this, CartActivity.class);
 
-        for(Product prod:productList) {
+        for(ProductInCart prod:productList) {
             cnt++;
             final int productid = prod.getId();
             LinearLayout Llayout = new LinearLayout(this);
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             parent.addView(Llayout);
             final Button btnName = new Button(this);
             btnName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            btnName.setText(prod.getName());
+            btnName.setText(prod.getProduct().getName());
             btnName.setBackgroundColor(0xffFAFAFA);
             btnName.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -87,15 +87,18 @@ public class MainActivity extends AppCompatActivity {
             });
             TextView tvPrice = new TextView(this);
             tvPrice.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            tvPrice.setText(Float.toString(prod.getPrice())+"€");
+            tvPrice.setText(Float.toString(prod.getProduct().getPrice())+"€");
             ImageButton ibEdit = new ImageButton(this);
             ibEdit.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             ibEdit.setBackgroundColor(0000);
-            ibEdit.setImageResource(R.drawable.edit);
+            ibEdit.setImageResource(R.drawable.trash);
             ibEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    intent.putExtra("idProduct",productid);
+                    re.beginTransaction();
+                    re.where(ProductInCart.class).equalTo("id",productid).findFirst().deleteFromRealm();
+                    re.commitTransaction();
+                    re.close();
                     startActivity(intent);
                 }
             });
@@ -111,21 +114,13 @@ public class MainActivity extends AppCompatActivity {
             dbOp.deleteCartId(i);
         }*/
         Log.i("MaxProd", ""+re.where(Product.class).findAll().size());
-        re.close();
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        findViewById(R.id.fab).setVisibility(View.GONE);
 
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                intent.putExtra("idProduct", -1);
-                startActivity(intent);
-            }
-        });
 
 
     }
@@ -136,15 +131,5 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem Item){
-        if(Item.getItemId()==R.id.cartActivity){
-            Intent intent = new Intent(this,CartActivity.class);
-            startActivity(intent);
-        }
-        return true;
-    }
-
 
 }

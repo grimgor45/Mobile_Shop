@@ -54,7 +54,7 @@ public class DBOperation {
         cart.setUser(user);
         re.commitTransaction();
     }
-    void createProduct(String name, String commentary, Shelf shelf, float price, Cart cart){
+    public void createProduct(String name, String commentary, Shelf shelf, float price, Cart cart){
         re.beginTransaction();
         Product product = re.createObject(Product.class, GenerateKey(Product.class));
         product.setShelf(shelf);
@@ -65,9 +65,10 @@ public class DBOperation {
         product.setTaken(false);
         re.commitTransaction();
     }
-    void createProductInCart(String commentary, Cart cart, Product product, int quantity){
+    public void createProductInCart(String commentary, Cart cart, Product product, int quantity){
         re.beginTransaction();
         ProductInCart prodTo = re.createObject(ProductInCart.class, GenerateKey(ProductInCart.class));
+        prodTo.setProduct(product);
         prodTo.setCommentary(commentary);
         prodTo.setCart(cart);
         prodTo.setTaken(false);
