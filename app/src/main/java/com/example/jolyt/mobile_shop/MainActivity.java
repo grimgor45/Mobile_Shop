@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             dbOp.createItem(shelf);
         }
         if (re.where(Product.class).findFirst()==null){
-            dbOp.createProduct("Carottes", "400g",re.where(Shelf.class).equalTo("name", "rayon fruit").findFirst(),1,null);
+            dbOp.createProduct("Carottes", "400g",re.where(Shelf.class).equalTo("name", "Rayon Fruits").findFirst(),1,null);
         }
         if (re.where(ProductInCart.class).findFirst()==null)
         {
