@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.example.jolyt.mobile_shop.Database.DBOperation;
 import com.example.jolyt.mobile_shop.Database.Tables.Cart;
 import com.example.jolyt.mobile_shop.Database.Tables.Product;
+import com.example.jolyt.mobile_shop.Database.Tables.ProductInCart;
 import com.example.jolyt.mobile_shop.Database.Tables.Shelf;
 import com.example.jolyt.mobile_shop.Database.Tables.Users;
 import com.example.jolyt.mobile_shop.databinding.ActivityMainBinding;
@@ -43,22 +44,23 @@ public class MainActivity extends AppCompatActivity {
         ((ActivityMainBinding)DataBindingUtil.setContentView(this,R.layout.activity_main)).setMainViewModel(new MainModelView());
 
 
-                //Do not touch needed for database
-
-        //toadd object  use : new oject then new transaction and copy
-        //for PK autogenerate
-        //mutableRealmInteger
-        //https://stackoverflow.com/questions/40174920/how-to-set-primary-key-auto-increment-in-realm-android
 
         Realm re = Realm.getDefaultInstance();
-        DBOperation dbOp= new DBOperation(re);
-        Shelf shelf = new Shelf();
-        shelf.setId();
-        shelf.setName("Rayon bananes");
-        dbOp.createItem(shelf);
-        shelf = dbOp.readWithId(re.where(Shelf.class).max("id").intValue(), Shelf.class);
-       // dbOp.createProduct("1 kg de bananes","wtf is this banana",shelf,(float)2.45,null);
-        //dbOp.createProduct("2 kg de bananes","too much banana",shelf,(float)4.2,null);
+        DBOperation dbOp = new DBOperation(re);
+        if (re.where(Shelf.class).findFirst()==null) {
+
+            Shelf shelf = new Shelf();
+            shelf.setId();
+            shelf.setName("Rayon Fruits");
+            dbOp.createItem(shelf);
+        }
+        if (re.where(Product.class).findFirst()==null){
+            dbOp.createProduct("Carottes", "400g",re.where(Shelf.class).equalTo("name", "rayon fruit").findFirst(),1,null);
+        }
+        if (re.where(ProductInCart.class).findFirst()==null)
+        {
+            dbOp.createProductInCart("Comment", null, re.where(Product.class).equalTo("name", "Carottes").findFirst(),1);
+        }
 
 
         long sizeOfProductTable = re.where(Product.class).count();
@@ -104,12 +106,6 @@ public class MainActivity extends AppCompatActivity {
             Llayout.addView(ibEdit);
         }
 
-
-        //
-
-        /*for (int i = 0; i < re.where(Cart.class).findAll().size()+1; i++){
-            dbOp.deleteCartId(i);
-        }*/
         Log.i("MaxProd", ""+re.where(Product.class).findAll().size());
         re.close();
 

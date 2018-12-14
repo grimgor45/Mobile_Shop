@@ -45,12 +45,6 @@ public class CartActivity extends AppCompatActivity {
         ((ActivityMainBinding)DataBindingUtil.setContentView(this,R.layout.activity_main)).setMainViewModel(new MainModelView());
 
 
-        //Do not touch needed for database
-
-        //toadd object  use : new oject then new transaction and copy
-        //for PK autogenerate
-        //mutableRealmInteger
-        //https://stackoverflow.com/questions/40174920/how-to-set-primary-key-auto-increment-in-realm-android
         final Realm re = Realm.getDefaultInstance();
         final DBOperation dbOp= new DBOperation(re);
         Shelf shelf = new Shelf();
@@ -108,12 +102,6 @@ public class CartActivity extends AppCompatActivity {
         }
 
 
-        //
-
-        /*for (int i = 0; i < re.where(Cart.class).findAll().size()+1; i++){
-            dbOp.deleteCartId(i);
-        }*/
-        Log.i("MaxProd", ""+re.where(Product.class).findAll().size());
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

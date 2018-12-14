@@ -49,7 +49,6 @@ public class DetailFields extends BaseObservable {
         {
             this.comment = "";
         }
-        //notifyPropertyChanged(BR.comment);
     }
 
     public String getShelf() {
