@@ -57,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
         shelf.setName("Rayon bananes");
         dbOp.createItem(shelf);
         shelf = dbOp.readWithId(re.where(Shelf.class).max("id").intValue(), Shelf.class);
-        dbOp.createProduct("1 kg de bananes","wtf is this banana",shelf,(float)2.45,null);
-        dbOp.createProduct("2 kg de bananes","too much banana",shelf,(float)4.2,null);
+       // dbOp.createProduct("1 kg de bananes","wtf is this banana",shelf,(float)2.45,null);
+        //dbOp.createProduct("2 kg de bananes","too much banana",shelf,(float)4.2,null);
 
 
         long sizeOfProductTable = re.where(Product.class).count();
